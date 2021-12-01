@@ -1,0 +1,103 @@
+name: Docker Image Build
+
+# This workflow uses actions that are not certified by GitHub.
+# They are provided by a third-party and are governed by
+# separate terms of service, privacy policy, and support
+# documentation.
+
+on:
+  push:
+    branches:
+      - master
+  workflow_dispatch:
+  repository_dispatch:
+  schedule:
+    - cron: '0 0 * * *'
+
+env:
+  # Use docker.io for Docker Hub if empty
+  IMAGE_REGISTRY: ghcr.io
+  # github.repository as <account>/<repo>
+  IMAGE_NAME_PREFIX: ${{ github.repository_owner }}
+
+
+jobs:
+  linux:
+    name: Linux Image Build
+    runs-on: ubuntu-latest
+
+    permissions:
+      contents: read
+      packages: write
+
+    steps:
+      - name: Checkout files
+        uses: actions/checkout@v2
+
+      - name: Login to Docker Registry
+        if: github.event_name != 'pull_request'
+        uses: docker/login-action@v1.10.0
+        with:
+          registry: ${{ env.IMAGE_REGISTRY }}
+          username: ${{ github.repository_owner }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Build '${{ github.repository_owner }}/cassandra:3' Docker Image
+        run: |
+          docker build \
+              --file images/cassandra/3/Dockerfile \
+              --tag ${{ env.IMAGE_REGISTRY }}/${{ github.repository_owner }}/cassandra:3 \
+              images/cassandra/3/
+
+      - name: Build '${{ github.repository_owner }}/cassandra:4' Docker Image
+        run: |
+          docker build \
+              --file images/cassandra/4/Dockerfile \
+              --tag ${{ env.IMAGE_REGISTRY }}/${{ github.repository_owner }}/cassandra:4 \
+              images/cassandra/4/
+
+      - name: Build '${{ github.repository_owner }}/cassandra:latest' Docker Image
+        run: |
+          docker build \
+              --file images/cassandra/latest/Dockerfile \
+              --tag ${{ env.IMAGE_REGISTRY }}/${{ github.repository_owner }}/cassandra:latest \
+              images/cassandra/latest/
+
+      - name: Build '${{ github.repository_owner }}/consul:latest' Docker Image
+        run: |
+          docker build \
+              --file images/consul/latest/Dockerfile \
+              --tag ${{ env.IMAGE_REGISTRY }}/${{ github.repository_owner }}/consul:latest \
+              images/consul/latest/
+
+      - name: Build '${{ github.repository_owner }}/rabbitmq:mqtt' Docker Image
+        run: |
+          docker build \
+              --file images/rabbitmq/mqtt/Dockerfile \
+              --tag ${{ env.IMAGE_REGISTRY }}/${{ github.repository_owner }}/rabbitmq:mqtt \
+              images/rabbitmq/mqtt/
+
+      - name: Build '${{ github.repository_owner }}/rabbitmq:latest' Docker Image
+        run: |
+          docker build \
+              --file images/rabbitmq/latest/Dockerfile \
+              --tag ${{ env.IMAGE_REGISTRY }}/${{ github.repository_owner }}/rabbitmq:latest \
+              images/rabbitmq/latest/
+
+      - name: Push '${{ github.repository_owner }}/cassandra:3' Image to Docker Registry
+        run: docker push ${{ env.IMAGE_REGISTRY }}/${{ github.repository_owner }}/cassandra:3
+
+      - name: Push '${{ github.repository_owner }}/cassandra:4' Image to Docker Registry
+        run: docker push ${{ env.IMAGE_REGISTRY }}/${{ github.repository_owner }}/cassandra:4
+
+      - name: Push '${{ github.repository_owner }}/cassandra:latest' Image to Docker Registry
+        run: docker push ${{ env.IMAGE_REGISTRY }}/${{ github.repository_owner }}/cassandra:latest
+
+      - name: Push '${{ github.repository_owner }}/consul:latest' Image to Docker Registry
+        run: docker push ${{ env.IMAGE_REGISTRY }}/${{ github.repository_owner }}/consul:latest
+
+      - name: Push '${{ github.repository_owner }}/rabbitmq:mqtt' Image to Docker Registry
+        run: docker push ${{ env.IMAGE_REGISTRY }}/${{ github.repository_owner }}/rabbitmq:mqtt
+
+      - name: Push '${{ github.repository_owner }}/rabbitmq:latest' Image to Docker Registry
+        run: docker push ${{ env.IMAGE_REGISTRY }}/${{ github.repository_owner }}/rabbitmq:latest
