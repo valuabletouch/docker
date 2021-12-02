@@ -60,7 +60,6 @@ chmod +x $NEW_ENTRYPOINT
 
 export CASSANDRA_CLUSTER_NAME=${CASSANDRA_CLUSTER_NAME:-Container Cluster}
 export CASSANDRA_PORT=${CASSANDRA_PORT:-9042}
-export CASSANDRA_RPC_PORT=${CASSANDRA_RPC_PORT:-9160}
 
 envsubst < /etc/cassandra/cassandra.yaml.template > /etc/cassandra/cassandra.yaml
 
