@@ -43,11 +43,12 @@ EOF
 
 # Patch existing entrypoint to call our script in the background
 # This has been inspired by https://www.thetopsites.net/article/51594713.shtml
-ENTRYPOINT=/patched-entrypoint.sh
+OLD_ENTRYPOINT=$(which docker-entrypoint.sh)
+NEW_ENTRYPOINT=/patched-entrypoint.sh
 
-sed '$ d' /docker-entrypoint.sh > $ENTRYPOINT
+sed '$ d' $OLD_ENTRYPOINT > $NEW_ENTRYPOINT
 
-cat <<'EOF' >> $ENTRYPOINT
+cat <<'EOF' >> $NEW_ENTRYPOINT
 /run-user-init.sh &
 
 exec "$@"
@@ -55,7 +56,7 @@ EOF
 
 # Make both scripts executable
 chmod +x /run-user-init.sh
-chmod +x $ENTRYPOINT
+chmod +x $NEW_ENTRYPOINT
 
 export CASSANDRA_CLUSTER_NAME=${CASSANDRA_CLUSTER_NAME:-Container Cluster}
 export CASSANDRA_PORT=${CASSANDRA_PORT:-9042}
@@ -64,4 +65,4 @@ export CASSANDRA_RPC_PORT=${CASSANDRA_RPC_PORT:-9160}
 envsubst < /etc/cassandra/cassandra.yaml.template > /etc/cassandra/cassandra.yaml
 
 # Call the new entrypoint
-$ENTRYPOINT "$@"
+$NEW_ENTRYPOINT "$@"
