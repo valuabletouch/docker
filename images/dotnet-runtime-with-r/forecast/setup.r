@@ -1,8 +1,8 @@
 install.packages("forecast", repo = "https://cran.r-project.org/", dependencies = TRUE)
 
-install.packages("readxl", repo = "https://cran.r-project.org/")
+install.packages("Metrics", repo = "https://cran.r-project.org/", dependencies = TRUE)
 
-install.packages("Metrics", repo = "https://cran.r-project.org/")
+install.packages("readxl", repo = "https://cran.r-project.org/", dependencies = TRUE)
 
 sessionInfo()
 
