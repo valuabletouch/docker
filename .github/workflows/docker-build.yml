@@ -77,13 +77,13 @@ jobs:
               --tag ${{ env.IMAGE_REGISTRY }}/${{ github.repository_owner }}/dotnet-runtime-with-r:latest \
               images/dotnet-runtime-with-r/latest/
 
-      - name: Build '${{ github.repository_owner }}/dotnet-runtime-with-r:forecast' Docker Image
-        run: |
-          docker build \
-              --file images/dotnet-runtime-with-r/forecast/Dockerfile \
-              --build-arg IMAGE_PREFIX=${{ env.IMAGE_REGISTRY }}/${{ github.repository_owner }} \
-              --tag ${{ env.IMAGE_REGISTRY }}/${{ github.repository_owner }}/dotnet-runtime-with-r:forecast \
-              images/dotnet-runtime-with-r/forecast/
+#       - name: Build '${{ github.repository_owner }}/dotnet-runtime-with-r:forecast' Docker Image
+#         run: |
+#           docker build \
+#               --file images/dotnet-runtime-with-r/forecast/Dockerfile \
+#               --build-arg IMAGE_PREFIX=${{ env.IMAGE_REGISTRY }}/${{ github.repository_owner }} \
+#               --tag ${{ env.IMAGE_REGISTRY }}/${{ github.repository_owner }}/dotnet-runtime-with-r:forecast \
+#               images/dotnet-runtime-with-r/forecast/
 
       - name: Build '${{ github.repository_owner }}/rabbitmq:latest' Docker Image
         run: |
@@ -115,8 +115,8 @@ jobs:
       - name: Push '${{ github.repository_owner }}/dotnet-runtime-with-r:latest' Image to Docker Registry
         run: docker push ${{ env.IMAGE_REGISTRY }}/${{ github.repository_owner }}/dotnet-runtime-with-r:latest
 
-      - name: Push '${{ github.repository_owner }}/dotnet-runtime-with-r:forecast' Image to Docker Registry
-        run: docker push ${{ env.IMAGE_REGISTRY }}/${{ github.repository_owner }}/dotnet-runtime-with-r:forecast
+#       - name: Push '${{ github.repository_owner }}/dotnet-runtime-with-r:forecast' Image to Docker Registry
+#         run: docker push ${{ env.IMAGE_REGISTRY }}/${{ github.repository_owner }}/dotnet-runtime-with-r:forecast
 
       - name: Push '${{ github.repository_owner }}/rabbitmq:latest' Image to Docker Registry
         run: docker push ${{ env.IMAGE_REGISTRY }}/${{ github.repository_owner }}/rabbitmq:latest
