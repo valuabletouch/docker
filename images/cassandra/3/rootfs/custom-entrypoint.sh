@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-cat <<EOF >> /var/lib/cassandra/init-user.sql
+cat <<EOF >> /var/lib/cassandra/init-user.cql
 CREATE ROLE IF NOT EXISTS $CASSANDRA_USERNAME
     WITH PASSWORD = '$CASSANDRA_PASSWORD'
         AND LOGIN = true
@@ -29,13 +29,13 @@ cat <<'EOF' >> /run-user-init.sh
 
     echo "Init Cassandra $CASSANDRA_USERNAME user..."
 
-    cqlsh -u cassandra -p cassandra -f /var/lib/cassandra/init-user.sql
+    cqlsh -u cassandra -p cassandra -f /var/lib/cassandra/init-user.cql
 
     echo "Delete default Cassandra user..."
 
     cqlsh -u $CASSANDRA_USERNAME -p $CASSANDRA_PASSWORD -e 'DROP ROLE cassandra;'
 
-    rm -f /var/lib/cassandra/init-user.sql
+    rm -f /var/lib/cassandra/init-user.cql
 
     touch $LOCK
 ) &
