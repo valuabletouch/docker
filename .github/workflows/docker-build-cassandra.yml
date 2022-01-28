@@ -1,0 +1,71 @@
+name: Build Cassandra Docker Image(s)
+
+on:
+  push:
+    branches:
+      - master
+  pull_request:
+    branches:
+      - master
+  workflow_dispatch:
+  repository_dispatch:
+  schedule:
+    - cron: '0 0 * * *'
+
+env:
+  IMAGE_REGISTRY: ghcr.io
+  IMAGE_NAME_PREFIX: ${{ github.repository_owner }}
+
+jobs:
+  linux:
+    name: Build for Linux
+    runs-on: ubuntu-latest
+
+    permissions:
+      contents: read
+      packages: write
+
+    steps:
+      - name: Checkout files
+        uses: actions/checkout@v2
+
+      - name: Build '${{ github.repository_owner }}/cassandra:latest'
+        run: |
+          docker build \
+              --file images/cassandra/latest/Dockerfile \
+              --tag ${{ env.IMAGE_REGISTRY }}/${{ github.repository_owner }}/cassandra:latest \
+              images/cassandra/latest/
+
+      - name: Build '${{ github.repository_owner }}/cassandra:3'
+        run: |
+          docker build \
+              --file images/cassandra/3/Dockerfile \
+              --tag ${{ env.IMAGE_REGISTRY }}/${{ github.repository_owner }}/cassandra:3 \
+              images/cassandra/3/
+
+      - name: Build '${{ github.repository_owner }}/cassandra:4'
+        run: |
+          docker build \
+              --file images/cassandra/4/Dockerfile \
+              --tag ${{ env.IMAGE_REGISTRY }}/${{ github.repository_owner }}/cassandra:4 \
+              images/cassandra/4/
+
+      - name: Login to GitHub Docker Registry
+        if: github.event_name != 'pull_request'
+        uses: docker/login-action@v1.10.0
+        with:
+          registry: ${{ env.IMAGE_REGISTRY }}
+          username: ${{ github.repository_owner }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Push '${{ github.repository_owner }}/cassandra:latest'
+        if: github.event_name != 'pull_request'
+        run: docker push ${{ env.IMAGE_REGISTRY }}/${{ github.repository_owner }}/cassandra:latest
+
+      - name: Push '${{ github.repository_owner }}/cassandra:3'
+        if: github.event_name != 'pull_request'
+        run: docker push ${{ env.IMAGE_REGISTRY }}/${{ github.repository_owner }}/cassandra:3
+
+      - name: Push '${{ github.repository_owner }}/cassandra:4'
+        if: github.event_name != 'pull_request'
+        run: docker push ${{ env.IMAGE_REGISTRY }}/${{ github.repository_owner }}/cassandra:4
