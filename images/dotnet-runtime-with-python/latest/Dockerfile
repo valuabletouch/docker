@@ -26,6 +26,7 @@ RUN set -eux; \
         numpy \
         openpyxl \
         pandas \
+        requests \
         scikit-learn \
         sktime \
         tbats \
