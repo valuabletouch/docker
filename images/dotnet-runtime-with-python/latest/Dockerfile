@@ -18,6 +18,7 @@ RUN set -eux; \
         python3-venv; \
     pip3 install --no-cache --upgrade pip setuptools; \
     pip3 install --no-cache \
+        autogluon \
         catboost \
         datetime \
         holidays \
