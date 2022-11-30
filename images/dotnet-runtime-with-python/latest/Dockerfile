@@ -13,6 +13,7 @@ RUN set -eux; \
         coreutils \
         locales \
         make \
+        gcc \
         python3-dev \
         python3-pip \
         python3-venv; \
