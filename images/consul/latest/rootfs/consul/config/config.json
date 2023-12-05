@@ -1,5 +1,6 @@
 {
   "telemetry": {
-    "prometheus_retention_time": "10s"
+    "enable_host_metrics": true,
+    "prometheus_retention_time": "5s"
   }
 }
