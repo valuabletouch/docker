@@ -1,6 +1,6 @@
-FROM mcr.microsoft.com/dotnet/aspnet:7.0
+FROM mcr.microsoft.com/dotnet/aspnet:8.0
 
-LABEL maintainer="yasin.akar@vtc.com.tr"
+LABEL maintainer="docker@vtcenerji.com"
 
 USER root
 

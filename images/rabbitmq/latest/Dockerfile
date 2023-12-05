@@ -1,6 +1,6 @@
 FROM rabbitmq:management
 
-LABEL maintainer="yasin.akar@vtc.com.tr"
+LABEL maintainer="docker@vtcenerji.com"
 
 RUN rabbitmq-plugins enable --offline rabbitmq_prometheus
 

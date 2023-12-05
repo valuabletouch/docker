@@ -2,7 +2,7 @@ ARG IMAGE_PREFIX
 
 FROM ${IMAGE_PREFIX}/rabbitmq:latest
 
-LABEL maintainer="yasin.akar@vtc.com.tr"
+LABEL maintainer="docker@vtcenerji.com"
 
 RUN rabbitmq-plugins enable --offline rabbitmq_mqtt
 

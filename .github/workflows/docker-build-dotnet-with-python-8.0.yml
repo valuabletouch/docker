@@ -1,0 +1,49 @@
+name: Build .NET Runtime with Python Docker Image(s)
+
+on:
+  push:
+    branches:
+      - master
+  pull_request:
+    branches:
+      - master
+  workflow_dispatch:
+  repository_dispatch:
+  schedule:
+    - cron: '0 0 * * *'
+
+env:
+  IMAGE_REGISTRY: ghcr.io
+  IMAGE_NAME_PREFIX: ${{ github.repository_owner }}
+
+jobs:
+  linux:
+    name: Build for Linux
+    runs-on: ubuntu-latest
+
+    permissions:
+      contents: read
+      packages: write
+
+    steps:
+      - name: Checkout files
+        uses: actions/checkout@v2
+
+      - name: Build '${{ github.repository_owner }}/dotnet-runtime-with-python:8.0'
+        run: |
+          docker build \
+              --file images/dotnet-runtime-with-python/8.0/Dockerfile \
+              --tag ${{ env.IMAGE_REGISTRY }}/${{ github.repository_owner }}/dotnet-runtime-with-python:8.0 \
+              images/dotnet-runtime-with-python/8.0/
+
+      - name: Login to GitHub Docker Registry
+        if: github.event_name != 'pull_request'
+        uses: docker/login-action@v1.10.0
+        with:
+          registry: ${{ env.IMAGE_REGISTRY }}
+          username: ${{ github.repository_owner }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Push '${{ github.repository_owner }}/dotnet-runtime-with-python:8.0'
+        if: github.event_name != 'pull_request'
+        run: docker push ${{ env.IMAGE_REGISTRY }}/${{ github.repository_owner }}/dotnet-runtime-with-python:8.0

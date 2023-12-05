@@ -1,6 +1,6 @@
 FROM cassandra:3
 
-LABEL maintainer="yasin.akar@vtc.com.tr"
+LABEL maintainer="docker@vtcenerji.com"
 
 ENV LANG C.UTF-8
 ENV LC_ALL C.UTF-8

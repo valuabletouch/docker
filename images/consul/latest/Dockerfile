@@ -1,5 +1,5 @@
 FROM consul:latest
 
-LABEL maintainer="yasin.akar@vtc.com.tr"
+LABEL maintainer="docker@vtcenerji.com"
 
 COPY rootfs/ /

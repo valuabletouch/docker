@@ -1,36 +1,38 @@
 FROM mcr.microsoft.com/dotnet/aspnet:7.0
 
-LABEL maintainer="yasin.akar@vtc.com.tr"
+LABEL maintainer="docker@vtcenerji.com"
 
 USER root
 
 RUN set -eux; \
     apt-get update; \
     apt-get install -y --no-install-recommends \
-        ed \
-        less \
-        locales \
-        vim-tiny \
-        wget \
-        coreutils \
         autoconf \
-        linux-headers-amd64 \
-        make \
-        cmake \
         ca-certificates \
-        libssl-dev \
-        libcurl4-openssl-dev \
-        fonts-texgyre \
-        libopenblas0-pthread \
-        littler \
-        r-base \
-        r-base-dev \
-        r-recommended \
-        r-cran-littler \
+        cmake \
+        coreutils \
+        locales \
+        make \
+        gcc \
         python3-dev \
         python3-pip \
         python3-venv; \
-    pip install --no-cache --upgrade pip setuptools; \
+    pip3 install --no-cache --upgrade pip setuptools; \
+    pip3 install --no-cache \
+        autogluon \
+        catboost \
+        datetime \
+        holidays \
+        lightgbm \
+        matplotlib \
+        numpy \
+        openpyxl \
+        pandas \
+        requests \
+        scikit-learn \
+        sktime \
+        tbats \
+        xgboost; \
     rm -rf /var/lib/apt/lists/*; \
     rm -rf /tmp/*
 

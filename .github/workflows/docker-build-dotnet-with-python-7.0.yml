@@ -29,12 +29,12 @@ jobs:
       - name: Checkout files
         uses: actions/checkout@v2
 
-      - name: Build '${{ github.repository_owner }}/dotnet-runtime-with-python:latest'
+      - name: Build '${{ github.repository_owner }}/dotnet-runtime-with-python:7.0'
         run: |
           docker build \
-              --file images/dotnet-runtime-with-python/latest/Dockerfile \
-              --tag ${{ env.IMAGE_REGISTRY }}/${{ github.repository_owner }}/dotnet-runtime-with-python:latest \
-              images/dotnet-runtime-with-python/latest/
+              --file images/dotnet-runtime-with-python/7.0/Dockerfile \
+              --tag ${{ env.IMAGE_REGISTRY }}/${{ github.repository_owner }}/dotnet-runtime-with-python:7.0 \
+              images/dotnet-runtime-with-python/7.0/
 
       - name: Login to GitHub Docker Registry
         if: github.event_name != 'pull_request'
@@ -44,6 +44,6 @@ jobs:
           username: ${{ github.repository_owner }}
           password: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Push '${{ github.repository_owner }}/dotnet-runtime-with-python:latest'
+      - name: Push '${{ github.repository_owner }}/dotnet-runtime-with-python:7.0'
         if: github.event_name != 'pull_request'
-        run: docker push ${{ env.IMAGE_REGISTRY }}/${{ github.repository_owner }}/dotnet-runtime-with-python:latest
+        run: docker push ${{ env.IMAGE_REGISTRY }}/${{ github.repository_owner }}/dotnet-runtime-with-python:7.0
