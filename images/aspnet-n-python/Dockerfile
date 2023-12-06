@@ -1,5 +1,5 @@
-ARG DOTNET_VERSION=8.0
-ARG PYTHON_VERSION=3.11
+ARG DOTNET_VERSION
+ARG PYTHON_VERSION
 
 FROM python:${PYTHON_VERSION}-slim
 
@@ -9,15 +9,10 @@ LABEL maintainer="docker@vtcenerji.com"
 
 USER root
 
-COPY requirements.txt /tmp/
-
-RUN set -eux; \
-    pip install --no-cache-dir -r /tmp/requirements.txt; \
-    rm -rf /tmp/*
-
 RUN set -eux; \
     apt-get update; \
     apt-get install -y --no-install-recommends \
+        libgomp1 \
         locales \
         wget; \
     rm -rf /var/lib/apt/lists/*; \
@@ -27,6 +22,12 @@ RUN set -eux; \
     echo "en_US.UTF-8 UTF-8" >> /etc/locale.gen; \
     locale-gen en_US.utf8; \
     /usr/sbin/update-locale LANG=en_US.UTF-8
+
+COPY requirements.txt /tmp/
+
+RUN set -eux; \
+    pip install --no-cache-dir -r /tmp/requirements.txt; \
+    rm -rf /tmp/*
 
 ENV LANG en_US.UTF-8
 ENV LANGUAGE en_US.UTF-8
