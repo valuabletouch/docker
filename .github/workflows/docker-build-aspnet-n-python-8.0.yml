@@ -1,4 +1,4 @@
-name: Build .NET Runtime with Python Docker Image(s)
+name: Build ASP.NET Core 8.0 Runtime with Python Docker Image
 
 on:
   push:
@@ -13,6 +13,8 @@ on:
     - cron: '0 0 * * *'
 
 env:
+  DOTNET_VERSION: 8.0
+  PYTHON_VERSION: 3.11
   IMAGE_REGISTRY: ghcr.io
   IMAGE_NAME_PREFIX: ${{ github.repository_owner }}
 
@@ -29,12 +31,14 @@ jobs:
       - name: Checkout files
         uses: actions/checkout@v2
 
-      - name: Build '${{ github.repository_owner }}/dotnet-runtime-with-python:7.0'
+      - name: Build '${{ github.repository_owner }}/aspnet-n-python:${{ env.DOTNET_VERSION }}'
         run: |
           docker build \
-              --file images/dotnet-runtime-with-python/7.0/Dockerfile \
-              --tag ${{ env.IMAGE_REGISTRY }}/${{ github.repository_owner }}/dotnet-runtime-with-python:7.0 \
-              images/dotnet-runtime-with-python/7.0/
+              --file images/aspnet-n-python/Dockerfile \
+              --build-arg DOTNET_VERSION=${{ env.DOTNET_VERSION }} \
+              --build-arg PYTHON_VERSION=${{ env.PYTHON_VERSION }} \
+              --tag ${{ env.IMAGE_REGISTRY }}/${{ github.repository_owner }}/aspnet-n-python:${{ env.DOTNET_VERSION }} \
+              images/aspnet-n-python/
 
       - name: Login to GitHub Docker Registry
         if: github.event_name != 'pull_request'
@@ -44,6 +48,6 @@ jobs:
           username: ${{ github.repository_owner }}
           password: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Push '${{ github.repository_owner }}/dotnet-runtime-with-python:7.0'
+      - name: Push '${{ github.repository_owner }}/aspnet-n-python:${{ env.DOTNET_VERSION }}'
         if: github.event_name != 'pull_request'
-        run: docker push ${{ env.IMAGE_REGISTRY }}/${{ github.repository_owner }}/dotnet-runtime-with-python:7.0
+        run: docker push ${{ env.IMAGE_REGISTRY }}/${{ github.repository_owner }}/aspnet-n-python:${{ env.DOTNET_VERSION }}
