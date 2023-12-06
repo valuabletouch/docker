@@ -13,8 +13,8 @@ on:
     - cron: '0 0 * * *'
 
 env:
-  DOTNET_VERSION: 7.0
-  PYTHON_VERSION: 3.11
+  DOTNET_VERSION: "7.0"
+  PYTHON_VERSION: "3.11"
   IMAGE_REGISTRY: ghcr.io
   IMAGE_NAME_PREFIX: ${{ github.repository_owner }}
 
