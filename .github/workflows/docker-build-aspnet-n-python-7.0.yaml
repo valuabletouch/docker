@@ -1,4 +1,4 @@
-name: Build ASP.NET Core 8.0 Runtime with Python Docker Image
+name: Build ASP.NET Core 7.0 Runtime with Python Docker Image
 
 on:
   push:
