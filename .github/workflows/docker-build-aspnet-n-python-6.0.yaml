@@ -1,4 +1,4 @@
-name: Build ASP.NET Core 7.0 Runtime with Python Docker Image
+name: Build ASP.NET Core 8.0 Runtime with Python Docker Image
 
 on:
   push:
@@ -10,10 +10,10 @@ on:
   workflow_dispatch:
   repository_dispatch:
   schedule:
-    - cron: '0 0 * * *'
+    - cron: '0 0 * * 0'
 
 env:
-  DOTNET_VERSION: "7.0"
+  DOTNET_VERSION: "6.0"
   PYTHON_VERSION: "3.11"
   IMAGE_REGISTRY: ghcr.io
   IMAGE_NAME_PREFIX: ${{ github.repository_owner }}
@@ -34,11 +34,11 @@ jobs:
       - name: Build '${{ github.repository_owner }}/aspnet-n-python:${{ env.DOTNET_VERSION }}'
         run: |
           docker build \
-              --file images/aspnet-n-python/Dockerfile \
+              --file images/aspnet-n-python/${{ env.DOTNET_VERSION }}/Dockerfile \
               --build-arg DOTNET_VERSION=${{ env.DOTNET_VERSION }} \
               --build-arg PYTHON_VERSION=${{ env.PYTHON_VERSION }} \
               --tag ${{ env.IMAGE_REGISTRY }}/${{ github.repository_owner }}/aspnet-n-python:${{ env.DOTNET_VERSION }} \
-              images/aspnet-n-python/
+              images/aspnet-n-python/${{ env.DOTNET_VERSION }}/
 
       - name: Login to GitHub Docker Registry
         if: github.event_name != 'pull_request'

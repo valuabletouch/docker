@@ -10,7 +10,7 @@ on:
   workflow_dispatch:
   repository_dispatch:
   schedule:
-    - cron: '0 0 * * *'
+    - cron: '0 0 * * 0'
 
 env:
   DOTNET_VERSION: "8.0"
@@ -34,11 +34,11 @@ jobs:
       - name: Build '${{ github.repository_owner }}/aspnet-n-python:${{ env.DOTNET_VERSION }}'
         run: |
           docker build \
-              --file images/aspnet-n-python/Dockerfile \
+              --file images/aspnet-n-python/${{ env.DOTNET_VERSION }}/Dockerfile \
               --build-arg DOTNET_VERSION=${{ env.DOTNET_VERSION }} \
               --build-arg PYTHON_VERSION=${{ env.PYTHON_VERSION }} \
               --tag ${{ env.IMAGE_REGISTRY }}/${{ github.repository_owner }}/aspnet-n-python:${{ env.DOTNET_VERSION }} \
-              images/aspnet-n-python/
+              images/aspnet-n-python/${{ env.DOTNET_VERSION }}/
 
       - name: Login to GitHub Docker Registry
         if: github.event_name != 'pull_request'
