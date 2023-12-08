@@ -43,7 +43,7 @@ RUN DEBIAN_FRONTEND=noninteractive \
         # .NET dependencies
         libc6 \
         libgcc-s1 \
-        libicu70 \
+        libicu-dev \
         libssl3 \
         libstdc++6 \
         tzdata \

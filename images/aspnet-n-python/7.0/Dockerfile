@@ -41,7 +41,7 @@ RUN DEBIAN_FRONTEND=noninteractive \
         libc6 \
         libgcc1 \
         libgssapi-krb5-2 \
-        libicu70 \
+        libicu-dev \
         libssl3 \
         libstdc++6 \
         zlib1g; \
