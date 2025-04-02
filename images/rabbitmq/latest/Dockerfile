@@ -1,4 +1,4 @@
-FROM rabbitmq:management
+FROM rabbitmq:3.13-management
 
 LABEL maintainer="docker@vtcenerji.com"
 
